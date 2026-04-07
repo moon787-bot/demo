@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INOMEDIA - Platform Literasi Digital</title>
+    <style>
+        /* ========== VARIABLES ========== */
+        :root {
+            --red: #FF3B3B;
+            --white: #FFFFFF;
+            --dark: #333333;
+            --light-red: #FFEEEE;
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+            --radius: 15px;
+            --transition: all 0.3s ease;
+        }
+
+        /* ========== RESET & BASE ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--white);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ========== NAVBAR ========== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--white);
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--red);
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+
+        .logo:hover {
+            transform: rotate(-5deg);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--red);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .btn-login {
+            background: var(--red);
+            color: var(--white) !important;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            transition: var(--transition);
+        }
+
+        .btn-login:hover {
+            box-shadow: 0 4px 15px rgba(255,59,59,0.4);
+            transform: translateY(-2px);
+        }
+
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .hamburger {
+            width: 25px;
+            height: 3px;
+            background: var(--dark);
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .hamburger::before,
+        .hamburger::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: inherit;
+            transition: inherit;
+        }
+
+        .hamburger::before { top: -8px }
+        .hamburger::after { top: 8px }
+
+        /* ========== PAGE SYSTEM ========== */
+        .page {
+            display: none;
+            padding: 6rem 2rem 2rem;
+            min-height: 100vh;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* ========== HOME PAGE ========== */
+        #home {
+            background: linear-gradient(45deg, rgba(255,59,59,0.05), rgba(255,255,255,1));
+        }
+
+        .hero {
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--red);
+            animation: slideUp 1s ease;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .search-bar input {
+            padding: 1rem 2rem;
+            width: min(600px, 80%);
+            border: 2px solid var(--red);
+            border-radius: 30px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .search-bar button {
+            padding: 1rem 2.5rem;
+            background: var(--red);
+            color: var(--white);
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .kategori-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 4rem auto;
+        }
+
+        .kategori-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+            cursor: pointer;
+        }
+
+        /* ========== BERITA PAGE ========== */
+        #berita {
+            background: var(--light-red);
+        }
+
+        .berita-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .berita-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .berita-image {
+            height: 200px;
+            background: #ddd;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .berita-content {
+            padding: 1.5rem;
+        }
+
+        .berita-kategori {
+            background: var(--red);
+            color: var(--white);
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        /* ========== BUKU PAGE ========== */
+        #buku {
+            background: var(--white);
+        }
+
+        .buku-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .buku-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .buku-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .buku-cover {
+            width: 150px;
+            height: 200px;
+            background: #eee;
+            margin: 0 auto 1rem;
+            border-radius: 10px;
+            transition: var(--transition);
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* ========== NOVEL PAGE ========== */
+        #novel {
+            background: var(--light-red);
+        }
+
+        .novel-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .novel-filter {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .novel-filter button {
+            padding: 0.5rem 1.5rem;
+            border: 2px solid var(--red);
+            border-radius: 25px;
+            background: transparent;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        /* ========== HALAMAN MEMBACA ========== */
+        .btn-back {
+            background: var(--red);
+            color: var(--white);
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+
+        .btn-back:hover {
+            transform: translateX(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .article-content {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            color: #666;
+        }
+
+        .article-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: var(--radius);
+            margin: 1rem 0;
+        }
+
+        .book-viewer, .novel-viewer {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .page-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            padding: 1rem;
+            border-top: 2px solid var(--light-red);
+        }
+
+        .choices-container {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .choice-btn {
+            padding: 1rem;
+            background: var(--light-red);
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .page-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            text-align: justify;
+        }
+
+        .novel-cover {
+            width: 200px;
+            height: 300px;
+            background: #eee;
+            margin: 0 auto;
+            border-radius: 10px;
+            background-size: cover;
+        }
+
+        .novel-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--white);
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: var(--shadow);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .search-bar {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .search-bar input {
+                width: 100%;
+            }
+
+            .article-image {
+                height: 250px;
+            }
+            
+            .page-controls {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        /* ========== ANIMATIONS ========== */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* ========== INTERAKTIF ========== */
+        .berita-card:hover,
+        .buku-card:hover,
+        .kategori-card:hover,
+        .novel-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .novel-filter button:hover,
+        .novel-filter button.active {
+            background: var(--red);
+            color: var(--white);
+        }
+
+        @media print {
+            .navbar, .btn-back, .page-controls {
+                display: none !important;
+            }
+            
+            .article-content {
+                box-shadow: none;
+                padding: 0;
+            }
+        }
+    
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            font-style: italic;
+            color: #666;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 2rem;
+            color: #999;
+        }
+        .chapter-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+
+        .chapter-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .chapter-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        /* Animasi loading */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+         }
+
+         .loading::after {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,59,59,0.3);
+            border-radius: 50%;
+            border-top-color: var(--red);
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+            vertical-align: middle;
+         }
+        /* Tambahkan di bagian bawah CSS */
+        .article-text, .page-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            text-align: justify;
+        }
+    
+        .article-text p, .page-content p {
+            margin: 1.5rem 0;
+        }
+    
+        .article-text h2, .page-content h2 {
+            color: var(--red);
+            margin: 2rem 0 1rem;
+            font-size: 1.8rem;
+        }
+    
+        .article-text strong, .page-content strong {
+            color: var(--dark);
+            font-weight: 600;
+        }
+    
+        .article-text em, .page-content em {
+            font-style: italic;
+            color: #666;
+        }
+    
+        .article-text blockquote, .page-content blockquote {
+            border-left: 4px solid var(--red);
+            padding: 1rem 2rem;
+            margin: 1.5rem 0;
+            background: var(--light-red);
+            border-radius: 0 var(--radius) var(--radius) 0;
+        }
+    
+        .article-text ul, .page-content ul {
+            padding-left: 2rem;
+            margin: 1.5rem 0;
+        }
+    
+        .article-text li, .page-content li {
+            margin: 0.5rem 0;
+        }
+    
+        .article-text img, .page-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius);
+            margin: 1rem 0;
+        }
+    
+        .article-text a, .page-content a {
+            color: var(--red);
+            text-decoration: underline;
+            transition: var(--transition);
+        }
+    
+        .article-text a:hover, .page-content a:hover {
+            opacity: 0.8;
+        }
+
+        .search-results {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .search-results.active {
+            display: grid;
+        }
+
+
+   
+        .search-result-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+            cursor: pointer;
+        }
+   
+        .search-result-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+    
+        .search-results {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+    
+.novel-page-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+    padding: 1rem 0;
+    border-top: 2px solid var(--light-red);
+}
+
+.novel-page-controls button {
+    padding: 0.8rem 1.5rem;
+    min-width: 120px;
+}
+
+
+.btn-prev, .btn-next {
+    background: var(--red);
+    color: var(--white);
+    border: none;
+    border-radius: 25px;
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-prev::before, .btn-next::after {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: var(--white);
+    mask-size: contain;
+    transition: var(--transition);
+}
+
+.btn-prev::before {
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'%3E%3Cpath d='M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z'/%3E%3C/svg%3E");
+}
+
+.btn-next::after {
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'%3E%3Cpath d='M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z'/%3E%3C/svg%3E");
+}
+
+.btn-prev:hover, .btn-next:hover {
+    background: #ff1a1a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255,59,59,0.3);
+}
+
+.btn-prev:disabled, .btn-next:disabled {
+    background: var(--light-red);
+    color: var(--red);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.page-controls {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding: 1rem 0;
+    border-top: 2px solid var(--light-red);
+}
+
+.page-number, .chapter-number {
+    color: var(--dark);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .search-results {
+        grid-template-columns: 1fr;
+    }
+}
+
+    .btn-prev::before, .btn-next::after {
+        width: 16px;
+        height: 16px;
+    }
+
+    .page-controls {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+</style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#home" class="logo">INOMEDIA</a>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#berita">Berita</a></li>
+            <li><a href="#buku">Buku</a></li>
+            <li><a href="#novel">Novel</a></li>
+        </ul>
+        <div class="menu-toggle">
+            <div class="hamburger"></div>
+        </div>
+    </nav>
+
+    <div class="page-container">
+        <!-- Home Page -->
+        <section class="page active" id="home">
+            <div class="hero">
+                <div class="hero-content">
+                    <h1>Selamat Datang di INOMEDIA</h1>
+                    <p>Temukan dunia literasi dalam genggaman Anda</p>
+                    <div class="search-bar">
+                        <input type="text" placeholder="Cari berita, buku, atau novel..." onkeypress="handleSearchKey(event)">
+                        <button onclick="searchHandler()">Cari</button>
+                        <div class="search-results" id="search-results"></div>
+                    </div>
+                </div>
+            </div>
+          
+            <div class="kategori-grid">
+                <!-- Di dalam section#home, setelah .kategori-grid -->
+                <div class="kategori-card" onclick="showPage('berita')">
+                    <h3>Berita Terkini</h3>
+                    <p>Update terbaru sepanjang hari</p>
+                </div>
+                <div class="kategori-card" onclick="showPage('buku')">
+                    <h3>Buku Best Seller</h3>
+                    <p>Koleksi buku paling populer</p>
+                </div>
+                <div class="kategori-card" onclick="showPage('novel')">
+                    <h3>Novel Interaktif</h3>
+                    <p>Pengalaman membaca yang menyenangkan</p>
+                </div>
+            </div>
+        </section>
+
+      <!-- Berita Page -->
+      <section class="page" id="berita">
+          <div class="berita-grid" id="berita-container">
+              <!-- Data berita akan diisi oleh JavaScript -->
+          </div>
+      </section>
+
+      <!-- Buku Page -->
+      <section class="page" id="buku">
+          <div class="buku-header">
+              <h2>Koleksi Buku Digital</h2>
+          </div>
+          <div class="buku-grid" id="buku-container">
+        <!-- Data buku akan diisi oleh JavaScript -->
+          </div>
+      </section>
+
+      <!-- Novel Page -->
+      <section class="page" id="novel">
+          <div class="novel-header">
+              <h2>Novel Interaktif</h2>
+              <div class="novel-filter">
+                  <button class="active" data-genre="all">Semua</button>
+                  <button data-genre="romance">Romantis</button>
+                  <button data-genre="mystery">Misteri</button>
+                  <button data-genre="fantasy">Fantasi</button>
+              </div>
+          </div>
+          <div class="buku-grid" id="novel-container">
+              <!-- Data novel akan diisi oleh JavaScript -->
+          </div>
+      </section>
+    <!-- Halaman Membaca Berita -->
+    <section class="page" id="membaca-berita">
+        <div class="container">
+            <button class="btn-back" onclick="showPage('berita')">← Kembali ke Berita</button>          
+                <h1 id="berita-title">Judul Berita</h1>
+                <div class="article-meta">
+                    <span class="kategori" id="berita-category">Kategori</span>
+                    <span class="tanggal" id="berita-date">Tanggal</span>
+                    <span class="penulis" id="berita-author">Penulis</span>
+                </div>
+                <img src="" alt="Gambar Berita" class="article-image" id="berita-image">
+                <div class="article-text" id="berita-content">
+                    <!-- Konten akan diisi oleh JavaScript -->
+                </div>           
+        </div>
+    </section>
+        
+    <!-- Halaman Daftar Bab Buku -->
+    <section class="page" id="daftar-bab">
+      <div class="container">
+        <button class="btn-back" onclick="showPage('buku')">← Kembali ke Buku</button>
+        <h1 id="judul-buku">Judul Buku</h1>
+        <div class="chapter-list" id="daftar-bab-container"></div>
+      </div>
+    </section>  
+
+    <!-- Halaman Membaca Buku -->
+    <section class="page" id="membaca-buku">
+        <div class="container">
+            <button class="btn-back" onclick="showPage('daftar-bab')">← Kembali ke Daftar Bab</button>
+            
+                <h1 id="buku-title">Judul Buku</h1>
+                <div class="book-meta">
+                    <span id="buku-author">Penulis: -</span>
+                    <span id="buku-publisher">Penerbit: -</span>
+                    <span id="buku-year">Tahun: -</span>
+                </div>
+                <div class="book-content">
+                    <div class="page-content" id="buku-content">
+                        <!-- Konten akan diisi oleh JavaScript -->
+                    </div>
+                    <div class="page-controls">
+                        <button class="btn-prev">Sebelumnya</button>
+                        <span class="page-number">Halaman 1 dari 1</span>
+                        <button class="btn-next">Selanjutnya</button>
+                    </div>
+                </div>
+            
+        </div>
+    </section>
+
+    <!-- Halaman Daftar Chapter Novel -->  
+    <section class="page" id="daftar-chapter">
+      <div class="container">
+        <button class="btn-back" onclick="showPage('novel')">← Kembali ke Novel</button>
+        <h1 id="judul-novel">Judul Novel</h1>
+        <div class="chapter-list" id="daftar-chapter-container"></div>
+      </div>
+    </section> 
+        
+    <!-- Halaman Membaca Novel -->  
+    <section class="page" id="membaca-novel">
+      <div class="container">
+        <button class="btn-back" onclick="showPage('daftar-chapter')">← Kembali ke Daftar Chapter</button>
+        <h1 id="novel-title">Judul Novel</h1>
+        <div class="novel-meta">
+          <span id="novel-genre">Genre: -</span>
+          <span id="novel-chapter">Chapter: 1</span>
+        </div>
+        <div class="page-content" id="novel-content"></div>
+        <div class="page-controls">
+          <button class="btn-prev" onclick="prevNovelChapter()">Sebelumnya</button>
+          <span class="chapter-number" id="novel-chapter-number">Chapter 1</span>
+          <button class="btn-next" onclick="nextNovelChapter()">Selanjutnya</button>
+        </div>
+        <div class="choices-container" id="novel-choices"></div>
+      </div>
+    </section>  
+</div>
+
+<script src="database.js"></script>
+<script>
+    // State Aplikasi
+    const appState = {
+        bookState: {
+            currentBook: null,
+            currentPage: 0,
+            totalPages: 0
+        },
+        novelState: {
+            currentNovel: null,
+            currentChapter: 1
+        }
+    };
+
+    // Mobile Menu Handler
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    let isMenuOpen = false;
+
+    const toggleMenu = () => {
+        isMenuOpen = !isMenuOpen;
+        navLinks.classList.toggle('active');
+        menuToggle.classList.toggle('active');
+    };
+
+    if (menuToggle) {
+        menuToggle.addEventListener('click', toggleMenu);
+    }
+
+    // Page Management System
+    let currentPageId = 'home';
+    const pages = document.querySelectorAll('.page');
+
+
+    const showPage = (pageId) => {
+        pages.forEach(page => page.classList.remove('active'));
+        const targetPage = document.getElementById(pageId);
+        if (targetPage) {
+            targetPage.classList.add('active');
+            currentPageId = pageId;
+            window.scrollTo(0, 0);
+            history.replaceState(null, null, `#${pageId}`);
+        }
+        if (window.innerWidth <= 768 && isMenuOpen) toggleMenu();
+
+        // Auto-refresh konten saat masuk ke halaman
+         switch(pageId) {
+            case 'berita':
+                loadBerita();
+                break;
+            case 'buku':
+                loadBuku();
+                break;
+            case 'novel':
+                loadNovel();
+                break;
+        }
+    };
+
+    // Navigation Event Listeners
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const pageId = link.getAttribute('href').substring(1);
+            showPage(pageId);
+        });
+    });
+
+    
+function searchHandler() {
+    const keyword = document.querySelector('.search-bar input').value.trim().toLowerCase();
+    const kategoriGrid = document.querySelector('.kategori-grid');
+    const searchResults = document.getElementById('search-results');
+
+    // Reset tampilan jika pencarian kosong
+    if (!keyword) {
+        kategoriGrid.style.display = 'grid';
+        searchResults.classList.remove('active');
+        searchResults.innerHTML = '';
+        return;
+    }
+
+    // Filter data
+    const results = [];
+    
+    const searchInData = (data, type) => {
+        data.forEach(item => {
+            const match = item.title?.toLowerCase().includes(keyword) ||
+                         item.excerpt?.toLowerCase().includes(keyword) ||
+                         item.content?.toLowerCase().includes(keyword) ||
+                         item.author?.toLowerCase().includes(keyword);
+            if (match) results.push({ type, ...item });
+        });
+    };
+
+    // Cari di semua kategori
+    if (database.berita) searchInData(database.berita, 'berita');
+    if (database.buku) searchInData(database.buku, 'buku');
+    if (database.novel) searchInData(database.novel, 'novel');
+
+    // Update tampilan
+    kategoriGrid.style.display = 'none';
+    searchResults.classList.add('active');
+    
+    searchResults.innerHTML = results.length ? 
+        results.map(item => `
+            <div class="search-result-card" onclick="showContent('${item.type}', '${item.id}')">
+                <h3>${item.title}</h3>
+                <p><em>${item.type.toUpperCase()}</em></p>
+                ${item.excerpt ? `<p>${item.excerpt}</p>` : ''}
+            </div>`
+        ).join('') : 
+        '<div class="empty">Tidak ada hasil ditemukan</div>';
+}
+
+function handleSearchKey(e) {
+    if (e.key === 'Enter') searchHandler();
+}
+
+    // Ganti fungsi fetchData dengan ini
+    async function fetchData(endpoint) {
+      try {
+        // Simulasi delay loading
+        await new Promise(resolve => setTimeout(resolve, 500));
+    
+        switch(endpoint) {
+          case 'berita':
+            return database.berita;
+          case 'buku':
+            return database.buku;
+          case 'novel':
+            return database.novel;
+          default:
+            if (endpoint.startsWith('novel/')) {
+              const [_, id] = endpoint.split('/');
+              return database.novel.find(n => n.id == id);
+            }
+            throw new Error('Endpoint tidak valid');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        return null;
+      }
+    }      
+
+    // Fungsi untuk menampilkan berita
+    async function loadBerita() {
+        const container = document.getElementById('berita-container');
+        if (container) {
+            container.innerHTML = '<div class="loading">Memuat berita...</div>';
+            const berita = await fetchData('berita');
+            if (!berita || berita.length === 0) {
+                container.innerHTML = '<div class="empty">Tidak ada berita tersedia</div>';
+                return;
+            }
+            container.innerHTML = berita.map(item => `
+                <div class="berita-card" data-content-id="${item.id}" onclick="showContent('berita', '${item.id}')">
+                    <div class="berita-image" style="background-image: url('${item.image || 'default-news.jpg'}')"></div>
+                    <div class="berita-content">
+                        <span class="berita-kategori">${item.category || ''}</span>
+                        <h3>${item.title || ''}</h3>
+                        <p>${item.excerpt || ''}</p>
+                    </div>
+                </div>
+            `).join('');
+            // Observe new elements for scroll animation
+            document.querySelectorAll('.berita-card').forEach(item => observer.observe(item));
+        }
+    }
+
+    // Fungsi untuk menampilkan buku
+    async function loadBuku() {
+        const container = document.getElementById('buku-container');
+        if (container) {
+            container.innerHTML = '<div class="loading">Memuat buku...</div>';
+            const buku = await fetchData('buku');
+            if (!buku || buku.length === 0) {
+                container.innerHTML = '<div class="empty">Tidak ada buku tersedia</div>';
+                return;
+            }
+            container.innerHTML = buku.map(item => `
+                <div class="buku-card" data-content-id="${item.id}" onclick="showContent('buku', '${item.id}')">
+                    <div class="buku-cover" style="background-image: url('${item.cover || 'default-book.jpg'}')"></div>
+                    <h4>${item.title || ''}</h4>
+                    <p>Penulis: ${item.author || '-'}</p>
+                </div>
+            `).join('');
+            // Observe new elements for scroll animation
+            document.querySelectorAll('.buku-card').forEach(item => observer.observe(item));
+        }
+    }
+
+    // Fungsi untuk menampilkan novel
+    async function loadNovel(genre = 'all') {
+        const container = document.getElementById('novel-container');
+        if (container) {
+            container.innerHTML = '<div class="loading">Memuat novel...</div>';
+            const novel = await fetchData(`novel${genre === 'all' ? '' : '?genre=' + genre}`);
+            if (!novel || novel.length === 0) {
+                container.innerHTML = '<div class="empty">Tidak ada novel tersedia</div>';
+                return;
+            }
+            container.innerHTML = novel.map(item => `
+                <div class="novel-card" data-content-id="${item.id}" onclick="showContent('novel', '${item.id}')">
+                    <div class="buku-cover" style="background-image: url('${item.cover || 'default-novel.jpg'}')"></div>
+                    <h4>${item.title || ''}</h4>
+                    <p>Genre: ${item.genre || '-'}</p>
+                </div>
+            `).join('');
+            // Observe new elements for scroll animation
+            document.querySelectorAll('.novel-card').forEach(item => observer.observe(item));
+        }
+    }
+
+    // Event listener untuk filter novel
+    const novelFilters = document.querySelectorAll('.novel-filter button');
+    novelFilters.forEach(button => {
+        button.addEventListener('click', function() {
+            const activeFilter = document.querySelector('.novel-filter button.active');
+            if (activeFilter) {
+                activeFilter.classList.remove('active');
+            }
+            this.classList.add('active');
+            const genre = this.dataset.genre;
+            loadNovel(genre);
+        });
+    });
+    
+    async function showContent(type, id) {
+        try {
+            if (type === 'buku') {
+                const bookData = database.buku.find(b => b.id == id);
+                if (!bookData) return;
+                document.getElementById('judul-buku').textContent = bookData.title;
+                const container = document.getElementById('daftar-bab-container');
+                
+                // Generate daftar bab
+                container.innerHTML = bookData.chapters.map((chapter, index) => `
+                    <div class="chapter-card" onclick="loadBabBuku('${id}', ${index})">
+                        <h3>Bab ${index + 1}</h3>
+                        <p>${chapter.title}</p>
+                    </div>
+                `).join('');
+                showPage('daftar-bab');
+            }
+
+            else if (type === 'novel') {
+                const novelData = database.novel.find(n => n.id == id);
+                if (!novelData) return;
+                // Simpan ID novel ke state
+                appState.novelState.currentNovel = novelData.id;  // <-- PERBAIKAN 1
+                document.getElementById('judul-novel').textContent = novelData.title;
+                document.getElementById('novel-title').textContent = novelData.title;
+                const container = document.getElementById('daftar-chapter-container');
+                // Generate daftar chapter
+                container.innerHTML = novelData.chapters.map((chapter, index) => `
+                    <div class="chapter-card" onclick="loadNovelChapter(${index + 1}, ${novelData.id})"> 
+                        <h3>Chapter ${index + 1}</h3>
+                        <p>${chapter.title || ''}</p>
+                    </div>
+                `).join('');
+                showPage('daftar-chapter');
+            }
+            else if (type === 'berita') {
+                const content = database.berita.find(item => item.id == id);
+                if (!content) throw new Error('Berita tidak ditemukan');
+                document.getElementById('berita-title').textContent = content.title || '';
+                document.getElementById('berita-category').textContent = content.category || '';
+                document.getElementById('berita-date').textContent = content.date || new Date().toLocaleDateString();
+                document.getElementById('berita-author').textContent = content.author ? `Oleh: ${content.author}` : '';
+                document.getElementById('berita-image').src = content.image || 'default-news.jpg';
+                document.getElementById('berita-content').innerHTML = content.content || '<p>Konten tidak tersedia</p>';
+                showPage('membaca-berita');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Gagal memuat konten. Silakan coba lagi.');
+        }
+    }
+  
+    async function loadBabBuku(bookId, babIndex) {
+        const bookData = database.buku.find(b => b.id == bookId);
+        if (!bookData?.chapters?.[babIndex]) {
+            alert('Bab tidak ditemukan!');
+            return;
+        }
+
+        appState.bookState = {
+            currentBook: bookId,
+            currentChapter: babIndex,
+            currentPage: 0
+        };
+
+        // Update metadata
+        const updateField = (id, value) => {
+            document.getElementById(id).textContent = value;
+        };
+        
+        updateField('buku-author', `Penulis: ${bookData.author || '-'}`);
+        updateField('buku-publisher', `Penerbit: ${bookData.publisher || '-'}`);
+        updateField('buku-year', `Tahun: ${bookData.year || '-'}`);
+
+        updateBookPage();
+        showPage('membaca-buku');
+    }
+    
+    async function updateBookPage() {
+        const state = appState.bookState;
+        const bookData = database.buku.find(b => b.id == state.currentBook);
+        if (!bookData || !bookData.chapters[state.currentChapter]) {
+            console.error('Data buku/chapter tidak valid');
+            return;
+        }
+
+        const chapter = bookData.chapters[state.currentChapter];
+        
+        // Update semua elemen UI sekaligus
+        document.getElementById('buku-title').textContent = 
+            `${bookData.title} - Bab ${state.currentChapter + 1}`;
+            
+        document.getElementById('buku-content').innerHTML = 
+            chapter.pages[state.currentPage] || '<em>Konten tidak tersedia</em>';
+
+        const pageInfo = `Bab ${state.currentChapter + 1} - Halaman ${state.currentPage + 1} dari ${chapter.pages.length}`;
+        document.querySelector('.page-number').textContent = pageInfo;
+
+        // Update status tombol dengan kondisi yang lebih akurat
+        const prevButton = document.querySelector('.btn-prev');
+        const nextButton = document.querySelector('.btn-next');
+        
+        prevButton.disabled = (state.currentPage === 0 && state.currentChapter === 0);
+        nextButton.disabled = (state.currentPage === chapter.pages.length - 1 && 
+                             state.currentChapter === bookData.chapters.length - 1);
+    }
+      
+    function prevNovelChapter() {
+      if (appState.novelState.currentChapter > 1) {
+        loadNovelChapter(appState.novelState.currentChapter - 1, appState.novelState.currentNovel);
+      } else {
+        showPage('daftar-chapter');
+      }
+    }
+
+    function nextNovelChapter() {
+      const novel = database.novel.find(n => n.id == appState.novelState.currentNovel);
+      if (!novel) return;
+      if (appState.novelState.currentChapter < novel.chapters.length) {
+        loadNovelChapter(appState.novelState.currentChapter + 1, appState.novelState.currentNovel);
+      } else {
+        showPage('daftar-chapter');
+      }
+    }
+
+// Novel Interaction System
+async function loadNovelChapter(chapterId, novelId) { 
+    const novelContentElement = document.getElementById('novel-content');
+    const novelChapterElement = document.getElementById('novel-chapter');
+    const choicesContainer = document.getElementById('novel-choices');
+    try {
+        const novelData = database.novel.find(n => n.id == novelId);  
+        if (!novelData) {
+            throw new Error('Novel tidak ditemukan');
+        }
+            if (!novelData || chapterId > novelData.chapters.length) {
+        showPage('daftar-chapter');
+        return;
+    }
+    const chapter = novelData.chapters[chapterId - 1]; 
+        if (!chapter) {
+            throw new Error('Chapter tidak ditemukan');
+        }
+        if (novelContentElement) novelContentElement.innerHTML = chapter.content || '';
+        if (novelChapterElement) novelChapterElement.textContent = `Chapter: ${chapterId}`;
+        choicesContainer.innerHTML = ''; 
+        if (chapter.choices && chapter.choices.length > 0) {
+            chapter.choices.forEach((choice) => {
+                const button = document.createElement('button');
+                button.className = 'choice-btn';
+                button.textContent = choice.text;
+                button.addEventListener('click', () => loadNovelChapter(choice.next, novelId)); 
+                choicesContainer.appendChild(button);
+            });
+        } else {
+            const backButton = document.createElement('button');
+            backButton.className = 'choice-btn';
+            backButton.textContent = 'Kembali ke Daftar Novel';
+            backButton.addEventListener('click', () => showPage('novel'));
+            choicesContainer.appendChild(backButton);
+        }
+        
+        const chapterNumberSpan = document.getElementById('novel-chapter-number');
+        if (chapterNumberSpan) {
+    chapterNumberSpan.textContent = `Chapter ${chapterId} dari ${novelData.chapters.length}`;
+}
+
+        appState.novelState.currentChapter = chapterId;
+        showPage('membaca-novel');
+    } catch (error) {
+        console.error('Error loading novel chapter:', error);
+        if (novelContentElement) novelContentElement.textContent = 'Gagal memuat chapter novel.';
+        if (choicesContainer) choicesContainer.innerHTML = '';
+        const backButton = document.createElement('button');
+        backButton.className = 'choice-btn';
+        backButton.textContent = 'Kembali ke Daftar Novel';
+        backButton.addEventListener('click', () => showPage('novel'));
+        choicesContainer.appendChild(backButton);
+
+    }
+}       
+    
+    // Scroll Animation
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting) {
+                entry.target.style.opacity = 1;
+                entry.target.style.transform = 'translateY(0)';
+                observer.unobserve(entry.target);
+            }
+        }); 
+    }, { threshold: 0.1 }); 
+
+
+    document.querySelectorAll('.kategori-card, .berita-card, .buku-card, .novel-card').forEach(item => {
+        observer.observe(item);
+    });
+
+    // Handle Initial Load and Hash Change    
+    const handlePageLoad = () => {
+        const hash = location.hash.substring(1);
+        showPage(hash || 'home');
+    };
+
+    window.addEventListener('load', handlePageLoad);
+    window.addEventListener('hashchange', handlePageLoad);
+  
+
+document.querySelector('.btn-prev').addEventListener('click', () => {
+    const state = appState.bookState;
+    const bookData = database.buku.find(b => b.id == state.currentBook);
+    
+    if (state.currentPage > 0) {
+        state.currentPage--;
+    } else if (state.currentChapter > 0) {
+        state.currentChapter--;
+        state.currentPage = bookData.chapters[state.currentChapter].pages.length - 1;
+    }
+    updateBookPage();
+});
+
+document.querySelector('.btn-next').addEventListener('click', () => {
+    const state = appState.bookState;
+    const bookData = database.buku.find(b => b.id == state.currentBook);
+    
+    if (state.currentPage < bookData.chapters[state.currentChapter].pages.length - 1) {
+        state.currentPage++;
+    } else if (state.currentChapter < bookData.chapters.length - 1) {
+        state.currentChapter++;
+        state.currentPage = 0;
+    }
+    updateBookPage();
+});
+
+</script>
+</body>
+</html>
